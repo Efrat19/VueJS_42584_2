@@ -15,24 +15,17 @@
     <div id="container">
         <button id="display" @click="displayList()">Display List</button>
         <button id="Add" @click="showForm=true">Add To List</button>
-
+        
         <div id="AmazingForm" v-if="showForm">
-            <p>Description:
-                <input type="text" id="txtdescription" required> </p>
-            <p>Date:
-                <input type="date" id="txtdate" required> </p>
-            <p>Time:
-                <input type="time" id="txttime" required>
-            </p>
-            <button id="submit" @click="addToList()">Add Now</button>
-        </div>
+        <p>Description:<input type="text" id="txtdescription" required> </p>
+        <p>Date:<input type="date" id="txtdate" required> </p>
+        <p>Time:<input type="time" id="txttime" required></p>
+        <button id="submit" @click="addToList()">Add Now</button>
+</div>
 
-        <ul v-if="showList">
+        <ul v-if="!showForm">
             <li id="listItem" v-for="(task,index) in list">
-                Task no.{{ index+1 }}:
-                <B> "{{ task["description"] }}" </B> set for
-                <b>{{task["time"]}}</b> on
-                <b>{{task["date"]}} </b>
+               Task no.{{ index+1 }}: <B> "{{ task["description"] }}" </B> set for <b>{{task["time"]}}</b> on <b>{{task["date"]}} </b>
             </li>
         </ul>
 
@@ -46,7 +39,6 @@
                 this.date = date;
                 this.time = time;
             }
-
             getTaskProps() {
                 return `date: ${this.date}, time: ${this.time}, description: ${this.description}`;
             }
@@ -56,28 +48,24 @@
             data: {
                 list: [],
                 showForm: false,
-                showList: false,
+                showRemove:false
             },
             load: {
                 function() { console.log("start"); }
             },
-            methods:
-            {
-                load: {
-
-                },
-                loadList: function () {
+            methods: {
+                loadList:function(){
                     let ListStr = localStorage.getItem('TasksList');
                     this.list = JSON.parse(ListStr);
                 },
-                unloadList: function () {
+                unloadList:function(){
                     localStorage.setItem('TasksList', JSON.stringify(this.list));
                     this.list.clear;
                 },
                 displayList: function () {
-                    this.unloadList();
+                    this.loadList();
                     console.log('--------displayListFunction----------');
-                    this.showForm = false;
+                    this.showForm=false;
                     this.loadList();
                 },
                 addToList: function () {
@@ -86,19 +74,17 @@
                     let t1 = new Task(document.getElementById("txtdescription").value.toString(),
                         document.getElementById("txtdate").value.toString(),
                         document.getElementById("txttime").value.toString(), );
-                    this.list = this.list ? this.list : [];
+                        this.list=this.list?this.list:[];
                     this.list.push(t1);
-                    this.unloadList();
+                   this.unloadList();
                 },
                 //not used:
-                removeTask: function (index) {
+                removeTask:function(index){
                     this.list[index].clear;
                     this.displayList();
                 }
-
             }
         });
-
     </script>
 </body>
 
