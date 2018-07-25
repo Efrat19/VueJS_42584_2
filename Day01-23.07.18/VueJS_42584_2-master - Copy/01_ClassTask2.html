@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,6 +14,7 @@
 <body>
 
     <script>
+
         function getReq() {
             fetch('https://restcountries.eu/rest/v2/all?fields=name')
                 .then(function (response) {
@@ -20,11 +24,33 @@
                     let obj = myJson[Math.floor(Math.random() * 250)];
                     fetch('https://restcountries.eu/rest/v2/name/' + obj["name"]).then(function (response2) {
                         return response2.json();
-                    }).then(function (data) { console.log(data); });
+                    }).then(function (data) {
+                        console.log(data);
+                        //document.getElementById("result").innerHTML = JSON.stringify(data);
+                    });
                 })
+
+
         }
+
+    </script>
+    <script>
+        new Vue({
+            el: "#result",
+            data: {
+                arr: data
+            },
+            methods: {
+                sort: function () {
+                    arr.json();
+                }
+            }
+        });
     </script>
     <button onclick="getReq()">fetch</button>
+    <p id="result" v-for:"((val,key) in arr)">
+        <p>{{key}}:{{val}}</p>
+    </p>
 </body>
 
 </html>
