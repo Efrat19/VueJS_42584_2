@@ -25,8 +25,9 @@
 
         <ul v-if="!showForm">
             <li id="listItem" v-for="(task,index) in list">
-               Task no.{{ index+1 }}: <B> "{{ task["description"] }}" </B> set for <b>{{task["time"]}}</b> on <b>{{task["date"]}} </b>
+               Task no.{{ index+1 }}: <B> "{{ task["description"] }}" </B> set for <b>{{task["time"]}}</b> on <b>{{task["date"]}} </b><button @click="removeTask(index)" >remove</button>
             </li>
+            
         </ul>
 
     </div>
@@ -78,10 +79,14 @@
                     this.list.push(t1);
                    this.unloadList();
                 },
-                //not used:
                 removeTask:function(index){
-                    this.list[index].clear;
-                    this.displayList();
+                    console.log('---------removeTaskFunction---------');
+                    console.log(index);
+                    this.loadList();
+                    this.list.splice(index,1);
+                    //this.list[index].clear;
+                   // this.displayList();
+                    this.unloadList();
                 }
             }
         });
